@@ -1,8 +1,9 @@
 from pathlib import Path
 from typing import Any
+import os
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 from sqlalchemy.orm import Session
 
 from app.config import get_settings
@@ -47,4 +48,32 @@ async def upload_prescription(
     db.refresh(prescription)
 
     return RedirectResponse(url=f"/workspace/{prescription.id}", status_code=303)
+
+
+@router.delete("/{prescription_id}")
+async def delete_prescription(
+    prescription_id: int,
+    db: Session = Depends(get_db),
+) -> Any:
+    """Delete a prescription and its associated image file"""
+    prescription = db.query(Prescription).filter(Prescription.id == prescription_id).first()
+    
+    if not prescription:
+        raise HTTPException(status_code=404, detail="Prescription not found")
+    
+    # Delete the image file if it exists
+    if prescription.image_path and os.path.exists(prescription.image_path):
+        try:
+            os.remove(prescription.image_path)
+        except Exception as e:
+            print(f"Error deleting file: {e}")
+    
+    # Delete from database (cascade will delete medicines, doses, and notifications)
+    db.delete(prescription)
+    db.commit()
+    
+    return JSONResponse(
+        status_code=200,
+        content={"message": "Prescription deleted successfully", "prescription_id": prescription_id}
+    )
 
