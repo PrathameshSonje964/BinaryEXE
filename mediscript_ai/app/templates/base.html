@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title or "MediScript AI" }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900">
+<div class="min-h-screen">
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="/" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back to Dashboard</a>
+                <span class="font-semibold text-lg">MediScript AI</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="relative">
+                    <span class="material-icons text-gray-600">notifications</span>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center text-sm">
+                    U
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {% block content %}{% endblock %}
+    </main>
+</div>
+</body>
+</html>
+

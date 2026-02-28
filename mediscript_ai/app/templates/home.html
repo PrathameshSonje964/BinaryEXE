@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold">Your Prescriptions</h1>
+        <p class="text-sm text-gray-500">One prescription = one notebook workspace.</p>
+    </div>
+    <form action="/upload/" method="post" enctype="multipart/form-data" class="flex items-center space-x-2">
+        <input type="file" name="file" accept="image/*" class="text-sm">
+        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium">
+            Upload Prescription
+        </button>
+    </form>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {% for p in prescriptions %}
+        <a href="/workspace/{{ p.id }}" class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="font-semibold truncate">{{ p.title }}</h2>
+                <span class="text-xs px-2 py-1 rounded-full
+                    {% if p.status == 'active' %}bg-green-100 text-green-700
+                    {% elif p.status == 'completed' %}bg-gray-100 text-gray-700
+                    {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                    {{ p.status | capitalize }}
+                </span>
+            </div>
+            <p class="text-xs text-gray-500 mb-2">Confidence: {{ "%.1f"|format(p.confidence_score) }}%</p>
+            <p class="text-xs text-gray-400">Created: {{ p.created_at.strftime("%Y-%m-%d") }}</p>
+        </a>
+    {% else %}
+        <p class="text-sm text-gray-500">No prescriptions yet. Upload one to get started.</p>
+    {% endfor %}
+</div>
+{% endblock %}
+
