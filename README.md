@@ -14,7 +14,7 @@ There is a gap between doctor intent and patient understanding.
 
 ## Solution
 
-Sanjeevani converts handwriting into clear instructions in 4 steps:
+Sanjeevani converts handwriting into clear instructions in the 4 steps:
 
 1. User uploads prescription image  
 2. OCR extracts text  
